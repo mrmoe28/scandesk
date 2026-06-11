@@ -8,76 +8,54 @@
     <link rel="icon" type="image/png" href="../assets/scandesk.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="gradient-bg">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
-
-    <nav class="navbar">
-        <div class="container nav-inner">
-            <div class="logo">
-                <svg viewBox="0 0 48 48" width="32" height="32" class="logo-mark">
-                    <rect x="6" y="8" width="36" height="28" rx="4" fill="none" stroke="currentColor" stroke-width="2.5"></rect>
-                    <line x1="6" y1="20" x2="42" y2="20" stroke="currentColor" stroke-width="2"></line>
-                    <circle cx="24" cy="33" r="3" fill="currentColor"></circle>
-                    <line x1="24" y1="36" x2="24" y2="42" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line>
+    <nav class="nav">
+        <div class="container">
+            <a href="#" class="brand">
+                <svg width="28" height="28" viewBox="0 0 48 48" fill="none">
+                    <rect x="8" y="12" width="32" height="24" rx="3" stroke="currentColor" stroke-width="2.5" fill="none"></rect>
+                    <line x1="8" y1="24" x2="40" y2="24" stroke="currentColor" stroke-width="2" fill="none"></line>
+                    <circle cx="24" cy="33" r="2.5" fill="currentColor"></circle>
                 </svg>
                 <span>ScanDesk</span>
-            </div>
-            <a href="#buy" class="nav-cta">Buy Now</a>
+            </a>
+            <a href="#buy" class="nav-btn">Buy Now</a>
         </div>
     </nav>
 
     <header class="hero">
-        <div class="container">
-            <div class="hero-badge fade-up" data-delay="0">
-                <span>New Release v1.0.0</span>
+        <div class="hero-content">
+            <div class="eyebrow">
+                <span class="eyebrow-dot"></span>
+                Now Available v1.0.0
             </div>
-            <h1 class="fade-up" data-delay="100">
-                Scan Documents
-                <span class="highlight">Like a Pro</span>
-            </h1>
-            <p class="subtitle fade-up" data-delay="200">
-                The missing scanner app for Linux. One click. PDF in seconds.
-            </p>
-            <div class="hero-buttons fade-up" data-delay="300">
-                <a href="#buy" class="btn btn-primary">Get ScanDesk — $25</a>
-                <a href="https://github.com/mrmoe28/scandesk" class="btn btn-secondary" target="_blank">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.37 1.23-3.205-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.835 1.23 1.905 1.23 3.205 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"></path>
-                    </svg>
-                    View on GitHub
-                </a>
+            <h1>The scanner app Linux was missing.</h1>
+            <p class="lead">Plug in your scanner. Press one button. Get a perfect PDF. No drivers. No terminal. No frustration.</p>
+            <div class="cta-row">
+                <a href="https://square.link/u/UHhHKwVw" class="btn-main">Get ScanDesk for $25</a>
+                <a href="https://github.com/mrmoe28/scandesk" class="btn-ghost" target="_blank">Read the Docs</a>
             </div>
-            <div class="hero-meta fade-up" data-delay="400">
-                <span class="meta-dot"></span>
-                <span>One-time purchase</span>
-                <span class="meta-dot"></span>
+            <div class="hero-meta">
+                <span>One-time payment</span>
+                <span class="sep"></span>
+                <span>MIT License</span>
+                <span class="sep"></span>
                 <span>Lifetime updates</span>
-                <span class="meta-dot"></span>
-                <span>MIT Licensed</span>
             </div>
+        </div>
+
+        <div class="hero-visual">
+            <img src="../marketing/screenshot_main.png" alt="ScanDesk interface showing live scan preview and controls">
         </div>
     </header>
 
-    <section class="screenshots">
-        <div class="container">
-            <div class="screenshot-wrapper fade-up">
-                <div class="screenshot-glow"></div>
-                <img src="../marketing/screenshot_main.png" alt="ScanDesk Main Interface" class="hero-shot">
-            </div>
-        </div>
-    </section>
-
     <section class="features">
         <div class="container">
-            <h2 class="fade-up">Everything you need</h2>
+            <h2 class="section-head">Built for how you actually work.</h2>
             <div class="feature-grid">
-                <div class="feature-card fade-up" data-delay="0">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
                             <rect x="3" y="3" width="18" height="18" rx="2"></rect>
@@ -86,22 +64,21 @@
                         </svg>
                     </div>
                     <h3>One-Click Scan</h3>
-                    <p>Works with any SANE-compatible scanner. Canon, Epson, HP, Brother — plug in and go.</p>
+                    <p>Auto-detects any SANE scanner. Canon, Epson, HP, Brother — plug in and press Scan. Done.</p>
                 </div>
-                <div class="feature-card fade-up" data-delay="100">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
                             <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path>
                             <polyline points="14 2 14 8 20 8"></polyline>
                             <line x1="16" y1="13" x2="8" y2="13"></line>
                             <line x1="16" y1="17" x2="8" y2="17"></line>
-                            <polyline points="10 9 9 9 8 9"></polyline>
                         </svg>
                     </div>
                     <h3>PDF &amp; PNG</h3>
-                    <p>Selectable DPI: 150 for drafts, 300 for standard, 600 for archival quality.</p>
+                    <p>Export exactly how you need it. 150, 300, or 600 DPI. Single page or multi-page PDF.</p>
                 </div>
-                <div class="feature-card fade-up" data-delay="200">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
                             <rect x="3" y="3" width="7" height="7"></rect>
@@ -111,9 +88,9 @@
                         </svg>
                     </div>
                     <h3>Live Preview</h3>
-                    <p>Thumbnail sidebar updates in real time as you scan. Never lose track of a page.</p>
+                    <p>Thumbnails update as you scan. Organize by session folder. Never lose a page again.</p>
                 </div>
-                <div class="feature-card fade-up" data-delay="0">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
                             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
@@ -121,18 +98,18 @@
                         </svg>
                     </div>
                     <h3>Email Ready</h3>
-                    <p>Open Gmail compose with your scans attached. One button to send documents anywhere.</p>
+                    <p>Open Gmail with your scans attached in one click. No exporting, no dragging, no hunting.</p>
                 </div>
-                <div class="feature-card fade-up" data-delay="100">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
                             <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"></path>
                         </svg>
                     </div>
                     <h3>Session Folders</h3>
-                    <p>Organize scans by project or date. Automatic folder creation keeps your desk clean.</p>
+                    <p>Every scan goes into a dated folder automatically. Organized by default. Searchable forever.</p>
                 </div>
-                <div class="feature-card fade-up" data-delay="200">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
                             <circle cx="12" cy="12" r="5"></circle>
@@ -142,143 +119,73 @@
                             <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
                             <line x1="1" y1="12" x2="3" y2="12"></line>
                             <line x1="21" y1="12" x2="23" y2="12"></line>
-                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                         </svg>
                     </div>
-                    <h3>Dark &amp; Light Themes</h3>
-                    <p>Your preference is saved. Switch instantly without restarting the app.</p>
+                    <h3>Dark &amp; Light</h3>
+                    <p>Matches your system theme. Your preference persists. Looks good on every desktop.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="requirements">
+    <section class="specs">
         <div class="container">
-            <h2 class="fade-up">System Requirements</h2>
-            <ul class="fade-up">
-                <li>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    Linux (Ubuntu, Debian, Fedora, Arch, or any derivative)
-                </li>
-                <li>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    Python 3.9 or newer
-                </li>
-                <li>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    A USB or network scanner (SANE-compatible)
-                </li>
-                <li>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    No root required to run — only to install
-                </li>
+            <h2 class="section-head">Runs on your machine.</h2>
+            <ul class="spec-list">
+                <li>Linux (Ubuntu, Debian, Fedora, Arch, Mint)</li>
+                <li>Python 3.9 or newer</li>
+                <li>Any USB or network scanner with SANE support</li>
+                <li>No root needed to run — only to install</li>
             </ul>
         </div>
     </section>
 
     <section class="buy" id="buy">
         <div class="container">
-            <h2 class="fade-up">Get ScanDesk</h2>
-            <div class="pricing-card fade-up">
+            <div class="card">
                 <div class="price-tag">
                     <span class="price">$25</span>
-                    <span class="period">one-time</span>
+                    <span class="price-label">one-time</span>
                 </div>
-                <ul class="includes">
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                        ScanDesk v1.0.0 application
-                    </li>
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                        Install &amp; uninstall scripts
-                    </li>
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                        Desktop integration (.desktop file)
-                    </li>
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                        Full source code (MIT License)
-                    </li>
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                        Free updates forever
-                    </li>
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                        GitHub issue support
-                    </li>
+                <ul class="checklist">
+                    <li>ScanDesk v1.0.0 application</li>
+                    <li>Install &amp; uninstall scripts</li>
+                    <li>Desktop menu integration</li>
+                    <li>Full source code (MIT License)</li>
+                    <li>Free updates forever</li>
+                    <li>GitHub issue support</li>
                 </ul>
-                <a href="https://square.link/u/UHhHKwVw" class="btn btn-buy">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
-                        <rect x="1" y="4" width="22" height="16" rx="2"></rect>
-                        <line x1="1" y1="10" x2="23" y2="10"></line>
-                    </svg>
-                    Buy Now — $25
-                </a>
-                <p class="secure-note">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                        <path d="M7 11V7a5 5 0 0110 0v4"></path>
-                    </svg>
-                    Secure checkout powered by Square. Instant download after payment.
-                </p>
+                <a href="https://square.link/u/UHhHKwVw" class="btn-main full">Buy ScanDesk — $25</a>
+                <p class="secure">Checkout by Square. Instant download.</p>
             </div>
         </div>
     </section>
 
     <footer>
         <div class="container">
-            <p>Made with care by <a href="https://github.com/mrmoe28">mrmoe28</a></p>
-            <p>Licensed under MIT. Questions? <a href="mailto:support@ekosolarllc.com">support@ekosolarllc.com</a></p>
+            <p>Made by <a href="https://github.com/mrmoe28">Edward</a> · <a href="mailto:support@ekosolarllc.com">support@ekosolarllc.com</a></p>
+            <p>MIT License. Free to use, modify, and redistribute.</p>
         </div>
     </footer>
 
     <script>
-    // Fade-up animation on scroll
-    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const delay = entry.target.dataset.delay || 0;
-                setTimeout(() => entry.target.classList.add('visible'), delay);
-            }
+    (function() {
+        const items = document.querySelectorAll('.feature-card, .section-head, .spec-list li');
+        const obs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (e.isIntersecting) {
+                    e.target.style.opacity = '1';
+                    e.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.08 });
+        items.forEach(function(el) {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+            obs.observe(el);
         });
-    }, observerOptions);
-
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-    
-    // Smooth nav background on scroll
-    const nav = document.querySelector('.navbar');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 20) {
-            nav.classList.add('scrolled');
-        } else {
-            nav.classList.remove('scrolled');
-        }
-    });
+    })();
     </script>
 </body>
 </html>
