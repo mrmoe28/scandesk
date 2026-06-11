@@ -12,6 +12,11 @@ build/
 # Backups
 *.bak
 *.bak.*
+canon_scanner_ui.py*
+run-canon-scanner-ui.sh
+
+# Automation helpers
+gumroad_create_product*.py
 
 # Logs
 app.log

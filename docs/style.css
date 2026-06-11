@@ -1,0 +1,301 @@
+/* ScanDesk Landing Page */
+:root {
+    --bg: #1a1a2e;
+    --bg-light: #16213e;
+    --accent: #e94560;
+    --accent-hover: #d63852;
+    --text: #eaeaea;
+    --text-dim: #a0a0b0;
+    --card: #252545;
+    --border: rgba(255,255,255,0.08);
+    --radius: 12px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Navbar */
+.navbar {
+    position: sticky;
+    top: 0;
+    background: rgba(26,26,46,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+}
+
+.nav-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 64px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.logo img {
+    border-radius: 8px;
+}
+
+.nav-cta {
+    background: var(--accent);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.nav-cta:hover { background: var(--accent-hover); }
+
+/* Hero */
+.hero {
+    text-align: center;
+    padding: 80px 0 40px;
+}
+
+.hero h1 {
+    font-size: 3.2rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.subtitle {
+    font-size: 1.35rem;
+    color: var(--text-dim);
+    margin-bottom: 32px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 14px 32px;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover { transform: translateY(-2px); }
+
+.btn-primary {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 4px 15px rgba(233,69,96,0.3);
+}
+
+.btn-secondary {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.hero-meta {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+}
+
+/* Screenshots */
+.screenshots {
+    padding: 40px 0;
+    text-align: center;
+}
+
+.hero-shot {
+    max-width: 100%;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+/* Features */
+.features {
+    padding: 60px 0;
+}
+
+.features h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.feature-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+}
+
+.feature-icon {
+    font-size: 2rem;
+    margin-bottom: 16px;
+}
+
+.feature-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+}
+
+.feature-card p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+}
+
+/* Requirements */
+.requirements {
+    background: var(--bg-light);
+    padding: 60px 0;
+    text-align: center;
+}
+
+.requirements h2 {
+    font-size: 2rem;
+    margin-bottom: 24px;
+}
+
+.requirements ul {
+    list-style: none;
+    display: inline-block;
+    text-align: left;
+}
+
+.requirements li {
+    padding: 8px 0;
+    color: var(--text-dim);
+    position: relative;
+    padding-left: 24px;
+}
+
+.requirements li::before {
+    content: "\2713";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+}
+
+/* Buy Section */
+.buy {
+    padding: 80px 0;
+    text-align: center;
+}
+
+.buy h2 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+}
+
+.pricing-card {
+    max-width: 420px;
+    margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 48px 32px;
+}
+
+.price {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.price-note {
+    color: var(--text-dim);
+    margin-bottom: 32px;
+}
+
+.includes {
+    list-style: none;
+    text-align: left;
+    margin-bottom: 32px;
+}
+
+.includes li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-dim);
+}
+
+.includes li:last-child { border-bottom: none; }
+
+.btn-buy {
+    width: 100%;
+    justify-content: center;
+    font-size: 1.1rem;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.secure-note {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+}
+
+/* Footer */
+footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 0;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+}
+
+footer a { color: var(--accent); text-decoration: none; }
+
+@media (max-width: 640px) {
+    .hero h1 { font-size: 2rem; }
+    .subtitle { font-size: 1rem; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .hero-buttons { flex-direction: column; }
+    .hero-buttons .btn { width: 100%; justify-content: center; }
+}
