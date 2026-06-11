@@ -1,0 +1,22 @@
+{
+  "product_name": "ScanDesk",
+  "tagline": "The scanner app Linux was missing.",
+  "landing_page": "https://mrmoe28.github.io/scandesk/",
+  "github_repo": "https://github.com/mrmoe28/scandesk",
+  "buy_link": "https://square.link/u/UHhHKwVw",
+  "price": "$25",
+  "author": "Edward",
+  "author_handle": "@mrmoe28",
+  "company": "EKO Solar LLC",
+  "email": "support@ekosolarllc.com",
+  "hashtags": [
+    "#Linux",
+    "#Scanner",
+    "#OpenSource",
+    "#DesktopApp",
+    "#SANE",
+    "#LinuxApps",
+    "#Productivity",
+    "#PDFTools"
+  ]
+}

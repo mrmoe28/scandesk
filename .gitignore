@@ -31,3 +31,7 @@ app.log
 # System
 .DS_Store
 Thumbs.db
+.env
+marketing/campaigns.jsonl
+marketing/daily_*.txt
+marketing/__pycache__/

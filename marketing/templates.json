@@ -1,0 +1,71 @@
+{
+  "description": "Marketing content templates for ScanDesk. Used by agent.py to generate platform-specific posts.",
+  "platforms": {
+    "x": {
+      "name": "X (Twitter)",
+      "max_length": 280,
+      "character_limit": 280,
+      "support_media": true,
+      "suggested_posting_times": ["8:00 AM", "12:00 PM", "5:00 PM"],
+      "variants": ["showcase", "feature", "milestones", "pain"]
+    },
+    "reddit": {
+      "name": "Reddit",
+      "max_length": 40000,
+      "support_media": true,
+      "subreddits": ["r/linux", "r/selfhosted", "r/Ubuntu", "r/linuxquestions", "r/linuxmasterrace"],
+      "variants": ["linux", "selfhosted", "ubuntu"]
+    },
+    "hackernews": {
+      "name": "Hacker News",
+      "max_length": 2000,
+      "support_media": false,
+      "posting_guidelines": "Show HN format, technical focus"
+    },
+    "producthunt": {
+      "name": "Product Hunt",
+      "max_length": 260,
+      "support_media": true,
+      "needs_maker": true
+    },
+    "linkedin": {
+      "name": "LinkedIn",
+      "max_length": 3000,
+      "support_media": true,
+      "suggested_posting_times": ["8:00 AM", "12:00 PM", "6:00 PM"]
+    },
+    "indiehackers": {
+      "name": "Indie Hackers",
+      "max_length": 10000,
+      "support_media": true,
+      "tone": "Personal, transparent"
+    },
+    "email": {
+      "name": "Email Newsletter",
+      "max_length": 5000,
+      "support_media": false,
+      "tone": "Direct, personal"
+    },
+    "blog": {
+      "name": "Blog Post",
+      "max_length": 50000,
+      "support_media": true,
+      "tone": "Technical but accessible"
+    }
+  },
+  "target_audiences": [
+    "Linux desktop users",
+    "Small business owners using Linux",
+    "Developers who need to scan documents",
+    "Open source enthusiasts",
+    "Ubuntu/Debian users frustrated with xsane",
+    "Self-hosted software fans"
+  ],
+  "key_messages": [
+    "Scanning on Linux doesn't have to be painful",
+    "One-click scanning for any SANE scanner",
+    "MIT licensed, $25 to support development",
+    "No cloud, no SaaS, no data collection",
+    "Built by a solo developer who uses Linux daily"
+  ]
+}
