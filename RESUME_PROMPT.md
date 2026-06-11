@@ -9,28 +9,34 @@
 3. **Marketing**: `marketing/screenshot_main.png`, `marketing/screenshot_settings.png`, `marketing/banner_feature.png`
 4. **Website**: `docs/index.html` (landing page), `docs/thanks.html` (post-purchase), `docs/style.css`
 5. **GitHub repo**: `https://github.com/mrmoe28/scandesk` with CI workflow (tests + auto-release on tags)
-6. **GitHub Release v1.0.0**: `https://github.com/mrmoe28/scandesk/releases/tag/v1.0.0` with tarball attached
-7. **Released tarball**: `scandesk-v1.0.0-linux.tar.gz` (264KB, SHA256 known)
+6. **GitHub Pages LIVE**: `https://mrmoe28.github.io/scandesk/` (deployed from `docs/` folder)
+7. **GitHub Release v1.0.0**: `https://github.com/mrmoe28/scandesk/releases/tag/v1.0.0` with tarball attached
+8. **Released tarball**: `scandesk-v1.0.0-linux.tar.gz` (264KB, SHA256 known)
+
+## Quick Links
+
+| Resource | URL |
+|----------|-----|
+| GitHub Repo | `https://github.com/mrmoe28/scandesk` |
+| Live Website | `https://mrmoe28.github.io/scandesk/` |
+| Download | `https://github.com/mrmoe28/scandesk/releases/download/v1.0.0/scandesk-v1.0.0-linux.tar.gz` |
+| Support | `https://github.com/mrmoe28/scandesk/issues` |
 
 ## Next Steps to Finish
 
-### Option 1: Deploy Landing Page
-- GitHub Pages: Enable Pages on the repo, point to `docs/` folder. URL becomes `https://mrmoe28.github.io/scandesk`
-- Or Netlify Drop: Zip `docs/` folder and drag to netlify.com
-
-### Option 2: Connect Payment
-- **Stripe** (recommended): Go to stripe.com → Payment Links → create a $25 link → paste URL into `docs/index.html` buy button
-- **Gumroad**: Create product manually, paste link into `docs/index.html`
+### Option 1: Connect Payment (Pick one)
+- **Stripe** (recommended): Go to stripe.com → Payment Links → create a $25 link → paste URL into `docs/index.html` buy button → push to GitHub (Pages auto-updates)
+- **Gumroad**: Create product, paste link into `docs/index.html`
 - **PayPal.me**: Create link, paste into buy button
 
-### Option 3: Record Demo Video
+### Option 2: Record Demo Video
 - Open ScanDesk on your laptop
-- Show scanning a document, preview sidebar, settings, email button
-- Upload to YouTube or host the MP4 in the repo
+- Show scanning, preview sidebar, settings, email button
+- Upload to YouTube or host MP4 in repo
 - Embed on landing page
 
-### Option 4: Distribute
-- Email the tarball directly to roofing company leads
+### Option 3: Distribute
+- Email tarball to roofing company leads
 - Post on r/linux, r/selfhosted, Hacker News
 - Add to awesome-linux-apps lists
 
