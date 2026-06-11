@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=ScanDesk
+Comment=Scan, organize, and email documents from your Linux desktop.
+Exec=/usr/local/bin/scandesk
+Icon=/opt/scandesk/assets/scandesk.png
+Type=Application
+Categories=Office;Graphics;Scanning;
+Terminal=false
+StartupNotify=true
+Keywords=scan;scanner;pdf;document;image;
+MimeType=application/pdf;image/png;

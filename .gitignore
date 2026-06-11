@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Backups
+*.bak
+*.bak.*
+
+# Logs
+app.log
+*.log
+
+# Editor cruft
+.vscode/
+.idea/
+*.swp
+*~
+
+# System
+.DS_Store
+Thumbs.db
