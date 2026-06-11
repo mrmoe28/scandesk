@@ -140,6 +140,31 @@
         </div>
     </section>
 
+    <section class="screenshots" id="screenshots">
+        <div class="container">
+            <h2 class="section-head">Real screenshots. Real pixels.</h2>
+            <div class="shot-tabs">
+                <button class="shot-tab active" data-target="shot-dark">Dark Mode</button>
+                <button class="shot-tab" data-target="shot-light">Light Mode</button>
+                <button class="shot-tab" data-target="shot-preview">Preview Sidebar</button>
+            </div>
+            <div class="shot-gallery">
+                <div class="shot-panel active" id="shot-dark">
+                    <img src="assets/screenshot-dark.png" alt="ScanDesk dark mode interface showing scan controls and session folders">
+                    <p class="shot-caption">Dark mode — matches your system. Clean scan controls, session folders, email ready.</p>
+                </div>
+                <div class="shot-panel" id="shot-light">
+                    <img src="assets/screenshot-light.png" alt="ScanDesk light mode interface">
+                    <p class="shot-caption">Light mode — same features, bright and readable.</p>
+                </div>
+                <div class="shot-panel" id="shot-preview">
+                    <img src="assets/screenshot-preview.png" alt="ScanDesk live thumbnail preview sidebar">
+                    <p class="shot-caption">Live thumbnail sidebar — see every scan as you make it.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="buy" id="buy">
         <div class="container">
             <div class="card">
@@ -184,6 +209,21 @@
             el.style.transform = 'translateY(20px)';
             el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
             obs.observe(el);
+        });
+    })();
+
+    // Screenshot tab switching
+    (function() {
+        const tabs = document.querySelectorAll('.shot-tab');
+        const panels = document.querySelectorAll('.shot-panel');
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                const target = tab.getAttribute('data-target');
+                tabs.forEach(function(t) { t.classList.remove('active'); });
+                panels.forEach(function(p) { p.classList.remove('active'); });
+                tab.classList.add('active');
+                document.getElementById(target).classList.add('active');
+            });
         });
     })();
     </script>
