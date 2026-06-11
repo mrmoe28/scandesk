@@ -25,7 +25,8 @@
 ## Next Steps to Finish
 
 ### Option 1: Connect Payment (Pick one)
-- **Stripe** (recommended): Go to stripe.com → Payment Links → create a $25 link → paste URL into `docs/index.html` buy button → push to GitHub (Pages auto-updates)
+- **Square** (RECOMMENDED — your choice): Go to `squareup.com` → Items & Orders → Create Item "ScanDesk v1.0.0" → Price $25 → Save → Share → Payment Link → copy URL → give it to me → I paste it into `docs/index.html` → push to GitHub → Pages auto-updates
+- **Stripe**: Go to stripe.com → Payment Links → create $25 link → paste URL into `docs/index.html` buy button → push to GitHub
 - **Gumroad**: Create product, paste link into `docs/index.html`
 - **PayPal.me**: Create link, paste into buy button
 
