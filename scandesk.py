@@ -4,7 +4,7 @@ import threading
 import zipfile
 import urllib.parse
 import tkinter as tk
-from tkinter import messagebox, filedialog
+from tkinter import filedialog
 from datetime import datetime
 from pathlib import Path
 
@@ -12,6 +12,170 @@ from PIL import Image
 from pdf2image import convert_from_path
 
 import customtkinter as ctk
+
+# --- Modern Toast Notification System ---
+def show_toast(parent, title, message, msg_type="info", duration=3000):
+    """
+    Show a modern toast/overlay notification instead of system messagebox.
+    msg_type: info | success | warning | error
+    """
+    colors = {
+        "info":    ("#0d6efd", "#0b5ed7"),
+        "success": ("#198754", "#157347"),
+        "warning": ("#ffc107", "#e6ac00"),
+        "error":   ("#dc3545", "#b02a37"),
+    }
+    text_colors = {
+        "info":    ("#ffffff", "#ffffff"),
+        "success": ("#ffffff", "#ffffff"),
+        "warning": ("#212529", "#212529"),
+        "error":   ("#ffffff", "#ffffff"),
+    }
+    border_colors = {
+        "info":    ("#4dabf7", "#4dabf7"),
+        "success": ("#51cf66", "#51cf66"),
+        "warning": ("#ffe066", "#ffe066"),
+        "error":   ("#ff6b6b", "#ff6b6b"),
+    }
+
+    fg = colors.get(msg_type, colors["info"])
+    tc = text_colors.get(msg_type, text_colors["info"])
+    bc = border_colors.get(msg_type, border_colors["info"])
+
+    overlay = ctk.CTkFrame(parent, corner_radius=18, fg_color=fg, border_width=2, border_color=bc)
+
+    # Grid inside overlay
+    overlay.grid_columnconfigure(0, weight=1)
+
+    title_lbl = ctk.CTkLabel(
+        overlay,
+        text=title,
+        font=ctk.CTkFont(size=15, weight="bold"),
+        text_color=tc
+    )
+    title_lbl.grid(row=0, column=0, sticky="w", padx=18, pady=(14, 2))
+
+    msg_lbl = ctk.CTkLabel(
+        overlay,
+        text=message,
+        font=ctk.CTkFont(size=13),
+        text_color=tc,
+        wraplength=340,
+        justify="left"
+    )
+    msg_lbl.grid(row=1, column=0, sticky="w", padx=18, pady=(2, 14))
+
+    # Position overlay at top-center of parent with margin
+    overlay.place(relx=0.5, y=22, anchor="n")
+
+    _after_id = None
+
+    def dismiss():
+        nonlocal _after_id
+        if _after_id is not None:
+            try:
+                parent.after_cancel(_after_id)
+            except Exception:
+                pass
+            _after_id = None
+        try:
+            overlay.destroy()
+        except Exception:
+            pass
+
+    # Click anywhere on toast to dismiss early
+    overlay.bind("<Button-1>", lambda e: dismiss())
+    title_lbl.bind("<Button-1>", lambda e: dismiss())
+    msg_lbl.bind("<Button-1>", lambda e: dismiss())
+
+    _after_id = parent.after(duration, dismiss)
+
+
+# --- Modern Confirmation Dialog ---
+def show_confirm_dialog(parent, title, message, on_confirm, on_cancel=None):
+    """Show a modern modal confirmation dialog using CTkToplevel."""
+    dialog = ctk.CTkToplevel(parent)
+    dialog.title(title)
+    dialog.transient(parent)
+    dialog.grab_set()
+    dialog.lift()
+    dialog.focus_force()
+
+    # Size and center
+    w, h = 420, 200
+    sw = parent.winfo_screenwidth()
+    sh = parent.winfo_screenheight()
+    x = int((sw - w) / 2)
+    y = int((sh - h) / 2)
+    dialog.geometry(f"{w}x{h}+{x}+{y}")
+    dialog.resizable(False, False)
+
+    dialog.grid_columnconfigure(0, weight=1)
+    dialog.grid_rowconfigure(1, weight=1)
+
+    # Header
+    header = ctk.CTkFrame(dialog, fg_color=("#dc3545", "#b02a37"), corner_radius=0, height=48)
+    header.grid(row=0, column=0, sticky="ew")
+    header.grid_propagate(False)
+    header.grid_columnconfigure(0, weight=1)
+
+    ctk.CTkLabel(
+        header,
+        text=title,
+        font=ctk.CTkFont(size=16, weight="bold"),
+        text_color=("#ffffff", "#ffffff")
+    ).grid(row=0, column=0, sticky="w", padx=18, pady=(10, 10))
+
+    # Body
+    body = ctk.CTkFrame(dialog, fg_color="transparent")
+    body.grid(row=1, column=0, sticky="nsew", padx=18, pady=14)
+    body.grid_columnconfigure(0, weight=1)
+
+    ctk.CTkLabel(
+        body,
+        text=message,
+        font=ctk.CTkFont(size=13),
+        wraplength=360,
+        justify="left"
+    ).grid(row=0, column=0, sticky="w")
+
+    # Buttons
+    btn_row = ctk.CTkFrame(dialog, fg_color="transparent")
+    btn_row.grid(row=2, column=0, sticky="ew", padx=18, pady=(0, 18))
+    btn_row.grid_columnconfigure((0, 1), weight=1)
+
+    def _confirm():
+        dialog.destroy()
+        if on_confirm:
+            on_confirm()
+
+    def _cancel():
+        dialog.destroy()
+        if on_cancel:
+            on_cancel()
+
+    ctk.CTkButton(
+        btn_row,
+        text="Cancel",
+        command=_cancel,
+        corner_radius=14,
+        height=40,
+        fg_color=("gray80", "gray25"),
+        hover_color=("gray70", "gray32"),
+        text_color=("gray10", "gray95")
+    ).grid(row=0, column=0, sticky="ew", padx=(0, 6))
+
+    ctk.CTkButton(
+        btn_row,
+        text="Delete",
+        command=_confirm,
+        corner_radius=14,
+        height=40,
+        fg_color=("#dc3545", "#b02a37"),
+        hover_color=("#b02a37", "#8a1c28"),
+        text_color=("#ffffff", "#ffffff")
+    ).grid(row=0, column=1, sticky="ew", padx=(6, 0))
+
 
 DEFAULT_SCANNER_DEVICE = "airscan:e0:Canon TS3700 series (USB)"
 SCAN_DIR = Path.home() / "Scans"
@@ -23,8 +187,6 @@ SETTINGS_FILE = APP_DIR / "settings.json"
 
 current_session_dir = SCAN_DIR
 folder_chosen_manually = False
-latest_preview_file = None
-preview_image_refs = []
 latest_preview_file = None
 preview_image_refs = []
 
@@ -73,6 +235,45 @@ def clean_folder_name(name):
 
 def run_cmd(cmd, timeout=15):
     return subprocess.run(cmd, shell=True, text=True, capture_output=True, timeout=timeout)
+
+
+def run_cmd_safe(cmd, timeout=60):
+    """
+    Run a shell command safely, writing output to a temp file
+    to avoid subprocess.PIPE deadlock on long-running operations.
+    Returns a mock object with returncode, stdout, stderr.
+    """
+    import tempfile
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.out', delete=False) as out_f:
+        out_path = out_f.name
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.err', delete=False) as err_f:
+        err_path = err_f.name
+
+    try:
+        with open(out_path, 'w') as out_fh, open(err_path, 'w') as err_fh:
+            proc = subprocess.Popen(
+                cmd,
+                shell=True,
+                stdout=out_fh,
+                stderr=err_fh
+            )
+            try:
+                proc.wait(timeout=timeout)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.wait()
+                raise
+
+        stdout = Path(out_path).read_text()
+        stderr = Path(err_path).read_text()
+        from types import SimpleNamespace
+        return SimpleNamespace(returncode=proc.returncode, stdout=stdout, stderr=stderr)
+    finally:
+        try:
+            Path(out_path).unlink(missing_ok=True)
+            Path(err_path).unlink(missing_ok=True)
+        except Exception:
+            pass
 
 def parse_scanimage_devices(output):
     devices = []
@@ -171,9 +372,10 @@ def refresh_file_count():
 
 
 def set_session_folder():
-    global current_session_dir, folder_chosen_manually
+    global current_session_dir, folder_chosen_manually, latest_preview_file
 
     folder_chosen_manually = False
+    latest_preview_file = None
 
     folder_name = clean_folder_name(session_name_var.get())
     current_session_dir = SCAN_DIR / folder_name
@@ -184,23 +386,41 @@ def set_session_folder():
     refresh_file_count()
     refresh_preview_list()
 
+
+# Prevent concurrent scans — one thread at a time
+_scan_lock = threading.Lock()
+
 def scan_document():
     global current_session_dir
 
-    if not folder_chosen_manually:
-        folder_name = clean_folder_name(session_name_var.get())
-        current_session_dir = SCAN_DIR / folder_name
-        current_session_dir.mkdir(parents=True, exist_ok=True)
-        session_path_var.set(str(current_session_dir))
+    if not _scan_lock.acquire(blocking=False):
+        # A scan is already in progress
+        return
 
-    scan_button.configure(state="disabled")
-    status_var.set("Scanning document...")
-    progress_bar.grid(row=1, column=0, sticky="ew", pady=(12, 0))
-    progress_bar.start()
-    root.update_idletasks()
+    try:
+        if not folder_chosen_manually:
+            folder_name = clean_folder_name(session_name_var.get())
+            current_session_dir = SCAN_DIR / folder_name
+            current_session_dir.mkdir(parents=True, exist_ok=True)
+            session_path_var.set(str(current_session_dir))
 
-    thread = threading.Thread(target=scan_document_worker, daemon=True)
-    thread.start()
+        scan_button.configure(state="disabled")
+        status_var.set("Scanning document...")
+        progress_bar.grid(row=1, column=0, sticky="ew", pady=(12, 0))
+        progress_bar.start()
+        root.update_idletasks()
+
+        def _worker():
+            try:
+                scan_document_worker()
+            finally:
+                _scan_lock.release()
+
+        thread = threading.Thread(target=_worker, daemon=True)
+        thread.start()
+    except Exception:
+        _scan_lock.release()
+        raise
 
 
 def scan_document_worker():
@@ -223,7 +443,14 @@ def scan_document_worker():
         f'> "{png_path}"'
     )
 
-    result = run_cmd(scan_cmd)
+    try:
+        result = run_cmd_safe(scan_cmd, timeout=60)
+    except subprocess.TimeoutExpired:
+        root.after(0, lambda: finish_scan_error("Scan Timed Out", "The scanner did not respond within 60 seconds.\nCheck that the scanner is powered on and connected."))
+        return
+    except Exception as error:
+        root.after(0, lambda: finish_scan_error("Scan Error", str(error)))
+        return
 
     if result.returncode != 0:
         root.after(0, lambda: finish_scan_error("Scan Failed", result.stderr or "Unknown scan error"))
@@ -233,7 +460,11 @@ def scan_document_worker():
         root.after(0, lambda: status_var.set("Creating PDF..."))
 
         pdf_cmd = f'img2pdf "{png_path}" -o "{pdf_path}"'
-        pdf_result = run_cmd(pdf_cmd)
+        try:
+            pdf_result = run_cmd_safe(pdf_cmd)
+        except Exception as error:
+            root.after(0, lambda: finish_scan_error("PDF Error", str(error)))
+            return
 
         if pdf_result.returncode != 0:
             root.after(0, lambda: finish_scan_error("PDF Failed", pdf_result.stderr or "Could not create PDF"))
@@ -279,11 +510,13 @@ def get_current_folder_scans():
 
     files = list(current_session_dir.glob("*.pdf")) + list(current_session_dir.glob("*.png"))
 
-    return sorted(
-        files,
-        key=lambda file: file.stat().st_mtime,
-        reverse=True
-    )
+    def _safe_mtime(file):
+        try:
+            return file.stat().st_mtime
+        except (OSError, FileNotFoundError):
+            return 0.0
+
+    return sorted(files, key=_safe_mtime, reverse=True)
 
 
 def load_preview(file_path=None):
@@ -300,8 +533,9 @@ def email_single_scan(file_path):
     file_path = Path(file_path)
 
     if not file_path.exists():
-        messagebox.showerror("File Missing", "This scan file could not be found.")
+        show_toast(root, "File Missing", "This scan file could not be found.", "error")
         refresh_preview_list()
+        refresh_file_count()
         return
 
     cmd = [
@@ -314,12 +548,24 @@ def email_single_scan(file_path):
         str(file_path)
     ]
 
-    result = subprocess.run(cmd, text=True, capture_output=True)
+    try:
+        result = subprocess.run(cmd, text=True, capture_output=True, timeout=15)
+    except FileNotFoundError:
+        show_toast(root, "Email Failed", "xdg-email is not installed.", "error")
+        return
+    except subprocess.TimeoutExpired:
+        show_toast(root, "Email Timed Out", "The email client did not respond within 15 seconds.", "warning")
+        return
+    except Exception as e:
+        show_toast(root, "Email Error", str(e), "error")
+        return
 
     if result.returncode != 0:
-        messagebox.showerror(
+        show_toast(
+            root,
             "Email Failed",
-            result.stderr or "Could not open your default email app. Make sure Thunderbird or another email client is installed."
+            result.stderr or "Could not open your default email app. Make sure Thunderbird or another email client is installed.",
+            "error"
         )
         return
 
@@ -327,72 +573,195 @@ def email_single_scan(file_path):
 
 
 def delete_single_scan(file_path):
-    global latest_preview_file
-
     file_path = Path(file_path)
 
     if not file_path.exists():
-        messagebox.showwarning("Already Deleted", "This scan file no longer exists.")
+        show_toast(root, "Already Deleted", "This scan file no longer exists.", "warning")
         refresh_preview_list()
         refresh_file_count()
         return
 
-    confirm = messagebox.askyesno(
-        "Delete Scan",
-        f"Delete this scan?\n\n{file_path.name}\n\nThis will move it to Trash if available, otherwise it will delete the file."
-    )
-
-    if not confirm:
-        return
-
-    trash_cmd = subprocess.run(
-        ["gio", "trash", str(file_path)],
-        text=True,
-        capture_output=True
-    )
-
-    if trash_cmd.returncode != 0:
+    def _do_delete():
+        global latest_preview_file
         try:
-            file_path.unlink()
+            trash_cmd = subprocess.run(
+                ["gio", "trash", str(file_path)],
+                text=True,
+                capture_output=True,
+                timeout=10
+            )
+        except FileNotFoundError:
+            trash_cmd = None
         except Exception as error:
-            messagebox.showerror("Delete Failed", str(error))
+            show_toast(root, "Delete Failed", str(error), "error")
             return
 
-    if latest_preview_file == file_path:
-        latest_preview_file = None
+        if trash_cmd is None or trash_cmd.returncode != 0:
+            try:
+                file_path.unlink()
+            except Exception as error:
+                show_toast(root, "Delete Failed", str(error), "error")
+                return
 
-    status_var.set(f"Deleted: {file_path.name}")
-    refresh_file_count()
-    refresh_preview_list()
+        if latest_preview_file == file_path:
+            latest_preview_file = None
+
+        status_var.set(f"Deleted: {file_path.name}")
+        refresh_file_count()
+        refresh_preview_list()
+
+    show_confirm_dialog(
+        root,
+        "Delete Scan",
+        f"Delete this scan?\n\n{file_path.name}\n\nThis will move it to Trash if available, otherwise it will delete the file.",
+        on_confirm=_do_delete
+    )
 
 
+
+# Track active custom popup menu so it can be dismissed
+_active_popup = None
 
 def show_scan_menu(file_path):
     file_path = Path(file_path)
+    global _active_popup
 
-    menu = tk.Menu(root, tearoff=0)
+    # Dismiss any existing popup first
+    if _active_popup is not None and _active_popup.winfo_exists():
+        _active_popup.destroy()
+        _active_popup = None
 
-    menu.add_command(
-        label="Open",
-        command=lambda: subprocess.Popen(["xdg-open", str(file_path)])
-    )
+    popup = ctk.CTkFrame(root, corner_radius=16, fg_color=("gray88", "gray16"), border_width=1, border_color=("gray70", "gray32"))
+    _active_popup = popup
 
-    menu.add_command(
-        label="Email",
-        command=lambda: email_single_scan(file_path)
-    )
+    # Position near the mouse pointer
+    px = root.winfo_pointerx() - root.winfo_rootx()
+    py = root.winfo_pointery() - root.winfo_rooty()
 
-    menu.add_separator()
+    # Track bindings/timeouts so they can be cleaned up exactly once
+    _dismissed = False
+    root_bind_id = None
+    esc_bind_id = None
+    _timeout_id = None
 
-    menu.add_command(
-        label="Delete",
-        command=lambda: delete_single_scan(file_path)
-    )
+    def _cleanup():
+        nonlocal _dismissed
+        global _active_popup
+        if _dismissed:
+            return
+        _dismissed = True
 
-    try:
-        menu.tk_popup(root.winfo_pointerx(), root.winfo_pointery())
-    finally:
-        menu.grab_release()
+        if _timeout_id is not None:
+            try:
+                root.after_cancel(_timeout_id)
+            except Exception:
+                pass
+
+        if root_bind_id is not None:
+            try:
+                root.unbind("<Button-1>", root_bind_id)
+            except Exception:
+                pass
+
+        if esc_bind_id is not None:
+            try:
+                root.unbind("<Escape>", esc_bind_id)
+            except Exception:
+                pass
+
+        if popup.winfo_exists():
+            popup.destroy()
+
+        if _active_popup is popup:
+            _active_popup = None
+
+    # Menu items
+    ctk.CTkButton(
+        popup,
+        text="Open",
+        command=lambda: (_cleanup(), subprocess.Popen(["xdg-open", str(file_path)])),
+        corner_radius=12,
+        height=36,
+        width=160,
+        fg_color="transparent",
+        hover_color=("gray80", "gray25"),
+        text_color=("gray10", "gray95"),
+        anchor="w"
+    ).pack(fill="x", padx=8, pady=(8, 2))
+
+    ctk.CTkButton(
+        popup,
+        text="Email",
+        command=lambda: (_cleanup(), email_single_scan(file_path)),
+        corner_radius=12,
+        height=36,
+        width=160,
+        fg_color="transparent",
+        hover_color=("gray80", "gray25"),
+        text_color=("gray10", "gray95"),
+        anchor="w"
+    ).pack(fill="x", padx=8, pady=2)
+
+    separator = ctk.CTkFrame(popup, height=1, fg_color=("gray70", "gray32"))
+    separator.pack(fill="x", padx=12, pady=4)
+
+    ctk.CTkButton(
+        popup,
+        text="Delete",
+        command=lambda: (_cleanup(), delete_single_scan(file_path)),
+        corner_radius=12,
+        height=36,
+        width=160,
+        fg_color="transparent",
+        hover_color=("#ff6b6b", "#8a1c28"),
+        text_color=("#dc3545", "#ff6b6b"),
+        anchor="w"
+    ).pack(fill="x", padx=8, pady=(2, 8))
+
+    # Wait for popup to compute size, then clamp to window bounds
+    popup.update_idletasks()
+    pw = popup.winfo_reqwidth()
+    ph = popup.winfo_reqheight()
+
+    rw = root.winfo_width()
+    rh = root.winfo_height()
+
+    x = min(px, rw - pw - 12)
+    y = min(py, rh - ph - 12)
+    x = max(8, x)
+    y = max(8, y)
+
+    popup.place(x=x, y=y)
+
+    # Dismiss when clicking anywhere else on the app
+    def _on_click_outside(event):
+        if not popup.winfo_exists():
+            return
+        # Check if click is inside popup
+        try:
+            wx = popup.winfo_x()
+            wy = popup.winfo_y()
+            ww = popup.winfo_width()
+            wh = popup.winfo_height()
+            if wx <= event.x <= wx + ww and wy <= event.y <= wy + wh:
+                return  # click inside popup, ignore
+        except Exception:
+            pass
+        _cleanup()
+
+    root_bind_id = root.bind("<Button-1>", _on_click_outside, add="+")
+
+    # Also dismiss on Escape
+    def _on_escape(event):
+        _cleanup()
+
+    esc_bind_id = root.bind("<Escape>", _on_escape, add="+")
+
+    # Auto-dismiss after 8 seconds
+    def _timeout_dismiss():
+        _cleanup()
+
+    _timeout_id = root.after(8000, _timeout_dismiss)
 
 
 def refresh_preview_list():
@@ -512,11 +881,14 @@ def refresh_preview_list():
             justify="left"
         ).pack(anchor="w", padx=10, pady=(0, 6))
 
+    # Force redraw so CTkScrollableFrame shows new images immediately
+    preview_list_frame.update()
+
 
 
 def open_preview_file():
     if not latest_preview_file:
-        messagebox.showwarning("No Preview", "No scanned document is available to preview yet.")
+        show_toast(root, "No Preview", "No scanned document is available to preview yet.", "warning")
         return
 
     subprocess.Popen(["xdg-open", str(latest_preview_file)])
@@ -544,20 +916,36 @@ def close_preview():
 
 
 def finish_scan_success(file_path, file_type):
-    progress_bar.stop()
-    progress_bar.grid_remove()
-    scan_button.configure(state="normal")
-    status_var.set(f"Saved {file_type}: {file_path.name}")
-    refresh_file_count()
-    load_preview(file_path)
+    try:
+        progress_bar.stop()
+        progress_bar.grid_remove()
+        scan_button.configure(state="normal")
+        status_var.set(f"Saved {file_type}: {file_path.name}")
+        refresh_file_count()
+        load_preview(file_path)
+    except Exception as error:
+        progress_bar.stop()
+        progress_bar.grid_remove()
+        scan_button.configure(state="normal")
+        status_var.set("Scan finished but preview failed")
+        show_toast(root, "Preview Error", f"Scan saved, but preview failed:\n{error}", "warning")
 
 
 def finish_scan_error(title, message):
-    progress_bar.stop()
-    progress_bar.grid_remove()
-    scan_button.configure(state="normal")
-    status_var.set("Scan failed")
-    messagebox.showerror(title, message)
+    try:
+        progress_bar.stop()
+        progress_bar.grid_remove()
+        scan_button.configure(state="normal")
+        status_var.set("Scan failed")
+        show_toast(root, title, message, "error")
+    except Exception:
+        # Nuclear fallback — if even the toast fails, at least unstick the UI
+        try:
+            progress_bar.stop()
+            progress_bar.grid_remove()
+            scan_button.configure(state="normal")
+        except Exception:
+            pass
 
 
 def open_scan_folder():
@@ -565,21 +953,25 @@ def open_scan_folder():
 
     selected_folder = ""
 
-    zenity_result = subprocess.run(
-        [
-            "zenity",
-            "--file-selection",
-            "--directory",
-            "--title=Choose Scan Folder",
-            f"--filename={str(SCAN_DIR)}/"
-        ],
-        text=True,
-        capture_output=True
-    )
+    try:
+        zenity_result = subprocess.run(
+            [
+                "zenity",
+                "--file-selection",
+                "--directory",
+                "--title=Choose Scan Folder",
+                f"--filename={str(SCAN_DIR)}/"
+            ],
+            text=True,
+            capture_output=True,
+            timeout=30
+        )
+        if zenity_result.returncode == 0:
+            selected_folder = zenity_result.stdout.strip()
+    except (FileNotFoundError, subprocess.SubprocessError):
+        pass
 
-    if zenity_result.returncode == 0:
-        selected_folder = zenity_result.stdout.strip()
-    else:
+    if not selected_folder:
         selected_folder = filedialog.askdirectory(
             title="Choose Scan Folder",
             initialdir=str(SCAN_DIR)
@@ -606,14 +998,19 @@ def get_latest_scan():
     files = list(current_session_dir.glob("*.pdf")) + list(current_session_dir.glob("*.png"))
     if not files:
         return None
-    return max(files, key=lambda file: file.stat().st_mtime)
+    def _safe_mtime(file):
+        try:
+            return file.stat().st_mtime
+        except (OSError, FileNotFoundError):
+            return 0.0
+    return max(files, key=_safe_mtime)
 
 
 def email_latest_scan():
     latest_file = get_latest_scan()
 
     if not latest_file:
-        messagebox.showwarning("No Scans Found", "No PDF or PNG scans were found in the current session folder.")
+        show_toast(root, "No Scans Found", "No PDF or PNG scans were found in the current session folder.", "warning")
         return
 
     cmd = [
@@ -626,12 +1023,24 @@ def email_latest_scan():
         str(latest_file)
     ]
 
-    result = subprocess.run(cmd, text=True, capture_output=True)
+    try:
+        result = subprocess.run(cmd, text=True, capture_output=True, timeout=15)
+    except FileNotFoundError:
+        show_toast(root, "Email Failed", "xdg-email is not installed.", "error")
+        return
+    except subprocess.TimeoutExpired:
+        show_toast(root, "Email Timed Out", "The email client did not respond within 15 seconds.", "warning")
+        return
+    except Exception as e:
+        show_toast(root, "Email Error", str(e), "error")
+        return
 
     if result.returncode != 0:
-        messagebox.showerror(
+        show_toast(
+            root,
             "Email Failed",
-            result.stderr or "Could not open your default email app. Make sure Thunderbird or another email client is installed."
+            result.stderr or "Could not open your default email app. Make sure Thunderbird or another email client is installed.",
+            "error"
         )
         return
 
@@ -644,18 +1053,24 @@ def email_latest_scan():
 def email_current_folder_zip():
     current_session_dir.mkdir(parents=True, exist_ok=True)
 
+    def _safe_mtime(file):
+        try:
+            return file.stat().st_mtime
+        except (OSError, FileNotFoundError):
+            return 0.0
+
     files = sorted(
         list(current_session_dir.glob("*.pdf")) +
         list(current_session_dir.glob("*.png")) +
         list(current_session_dir.glob("*.jpg")) +
         list(current_session_dir.glob("*.jpeg")),
-        key=lambda file: file.stat().st_mtime
+        key=_safe_mtime
     )
 
     files = [file for file in files if "_email_exports" not in str(file)]
 
     if not files:
-        messagebox.showwarning("No Scans Found", "No scan files were found in the current session folder.")
+        show_toast(root, "No Scans Found", "No scan files were found in the current session folder.", "warning")
         return
 
     subject = f"{email_subject_var.get()} - {current_session_dir.name}"
@@ -674,17 +1089,20 @@ def email_current_folder_zip():
         subprocess.Popen(["xdg-open", gmail_url])
         subprocess.Popen(["xdg-open", str(current_session_dir)])
     except Exception as error:
-        messagebox.showerror("Open Gmail Failed", str(error))
+        show_toast(root, "Open Gmail Failed", str(error), "error")
         status_var.set("Could not open Gmail compose.")
         return
 
-    messagebox.showinfo(
+    show_toast(
+        root,
         "Gmail Compose Opened",
         (
             f"Gmail compose was opened.\n\n"
             f"The scan folder was also opened here:\n{current_session_dir}\n\n"
             "Drag the PDF files directly into the Gmail draft, then send."
-        )
+        ),
+        "success",
+        duration=5000
     )
 
     status_var.set(f"Opened Gmail compose and folder with {len(files)} scan file(s).")
@@ -699,7 +1117,7 @@ def email_current_folder():
     )
 
     if not files:
-        messagebox.showwarning("No Scans Found", "No PDF or PNG scans were found in the current session folder.")
+        show_toast(root, "No Scans Found", "No PDF or PNG scans were found in the current session folder.", "warning")
         return
 
     cmd = [
@@ -713,12 +1131,14 @@ def email_current_folder():
     for file in files:
         cmd.extend(["--attach", str(file)])
 
-    result = subprocess.run(cmd, text=True, capture_output=True)
+    result = subprocess.run(cmd, text=True, capture_output=True, timeout=15)
 
     if result.returncode != 0:
-        messagebox.showerror(
+        show_toast(
+            root,
             "Email Failed",
-            result.stderr or "Could not open your default email app. Make sure Thunderbird or another email client is installed."
+            result.stderr or "Could not open your default email app. Make sure Thunderbird or another email client is installed.",
+            "error"
         )
         return
 
@@ -727,7 +1147,7 @@ def email_current_folder():
 
 def test_scanner():
     result = run_cmd("scanimage -L")
-    messagebox.showinfo("Detected Scanners", result.stdout or result.stderr or "No scanner detected")
+    show_toast(root, "Detected Scanners", result.stdout or result.stderr or "No scanner detected", "info", duration=5000)
 
 
 def search_for_new_scanners():
@@ -773,8 +1193,18 @@ def enable_mouse_scroll(widget):
 
 
 
+# Prevent multiple settings windows
+_settings_window_ref = None
+
 def open_settings_window():
+    global _settings_window_ref
+    if _settings_window_ref is not None and _settings_window_ref.winfo_exists():
+        _settings_window_ref.lift()
+        _settings_window_ref.focus_force()
+        return
+
     settings_window = ctk.CTkToplevel(root)
+    _settings_window_ref = settings_window
     settings_window.title("Settings")
     settings_width = int(root.winfo_screenwidth() * 0.72)
     settings_height = int(root.winfo_screenheight() * 0.82)
@@ -787,7 +1217,14 @@ def open_settings_window():
     settings_window.transient(root)
     settings_window.lift()
     settings_window.focus_force()
-    settings_window.after(200, settings_window.grab_set)
+    settings_window.grab_set()
+
+    def _on_settings_close():
+        global _settings_window_ref
+        _settings_window_ref = None
+        settings_window.destroy()
+
+    settings_window.protocol("WM_DELETE_WINDOW", _on_settings_close)
 
     wrapper = ctk.CTkScrollableFrame(settings_window, corner_radius=0)
     wrapper.pack(fill="both", expand=True, padx=18, pady=18)
@@ -992,8 +1429,6 @@ sidebar_width_var = tk.StringVar(value=str(settings.get("sidebar_width", 340)))
 status_var = tk.StringVar(value="Ready. Set a session folder, then scan each page.")
 preview_filename_var = tk.StringVar(value="No document scanned yet.")
 preview_breadcrumb_var = tk.StringVar(value="Scans")
-preview_filename_var = tk.StringVar(value="No document scanned yet.")
-preview_breadcrumb_var = tk.StringVar(value="Scans")
 
 app = ctk.CTkFrame(root, corner_radius=0)
 app.pack(fill="both", expand=True, padx=18, pady=18)
@@ -1088,14 +1523,15 @@ header_left.grid_columnconfigure(1, weight=1)
 try:
     icon_path = Path(__file__).resolve().parent / "assets" / "scandesk.png"
     _header_icon_pil = Image.open(str(icon_path)).convert("RGBA")
-    _header_icon_pil = _header_icon_pil.resize((56, 56), Image.LANCZOS)
+    _resample = getattr(Image, "Resampling", Image).LANCZOS  # type: ignore[attr-defined]
+    _header_icon_pil = _header_icon_pil.resize((56, 56), _resample)
     header_icon_photo = ctk.CTkImage(
         light_image=_header_icon_pil,
         dark_image=_header_icon_pil,
         size=(56, 56)
     )
     header_icon_label = ctk.CTkLabel(header_left, image=header_icon_photo, text="")
-    header_icon_label.image = header_icon_photo  # persist reference
+    header_icon_label._keep_ref = header_icon_photo  # type: ignore[attr-defined]  # persist reference
     header_icon_label.grid(row=0, column=0, rowspan=2, sticky="w", padx=(0, 14))
 except Exception:
     header_icon_photo = None
